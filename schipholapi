@@ -1,0 +1,132 @@
+
+var http = require("https");
+// var options = {
+//   "method": "GET",
+//   "hostname": "api.schiphol.nl",
+//   "port": null,
+//   "path": "/public-flights/flights?app_id=152ae116&app_key=16c9819f9d3ab5e97d46e66d404402ac",
+//   "headers": {
+//     "resourceversion": "v3"
+//   }
+// };
+//
+//
+// var req = http.get(options, function (res) {
+//   var chunks = [];
+//   res.on("data", function (chunk) {
+//     chunks.push(chunk);
+//   }).on("end", function () {
+//     var body = Buffer.concat(chunks);
+//     var parsedData = JSON.parse(body);
+//     // console.log(parsedData);
+//     parsedData.results.forEach(function (schipdata) {
+//
+//       console.log(schipdata);
+//     });
+//   });
+// });
+// req.end();
+
+http.get({
+  "method": "GET",
+  "hostname": "api.schiphol.nl",
+  "port": null,
+  "path": "/public-flights/flights?app_id=152ae116&app_key=16c9819f9d3ab5e97d46e66d404402ac",
+  "headers": {
+    "resourceversion": "v3"
+  }
+}, function(res) {
+    var chunks = [];
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+  });
+  res.on('end', function() {
+    var body = Buffer.concat(chunks);
+    var parsedData = JSON.parse(body);
+    // console.log(parsedData);
+    console.log(parsedData.flightName);
+    // parsedData.data.forEach(function(schipdata) {
+    //   console.log(schipdata.flightName);
+    // });
+  });
+}).end();
+
+//================= TEST
+
+// function schipholdata(err, posts) {
+//   var options = {
+//     "method": "GET",
+//     "hostname": "api.schiphol.nl",
+//     "port": null,
+//     "path": "/public-flights/flights?app_id=152ae116&app_key=16c9819f9d3ab5e97d46e66d404402ac",
+//     "headers": {
+//       "resourceversion": "v3"
+//     }
+//   };
+//   if(posts){
+//     var postPromises = posts.map(function(post) {
+//       return new Promise(function(resolve) {
+//         var req = http.get(options, function(res) {
+//             var bodyChunks = [];
+//             res.on('data', function(chunk) {
+//                 bodyChunks.push(chunk);
+//             }).on('end', function() {
+//                 var body = Buffer.concat(bodyChunks);
+//                 var parsedBody = JSON.parse(body);
+//                 // posts.flightName = parsedBody.flightName;
+//                 console.log(parsedBody);
+//                 // resolve the promise with the updated post
+//                 resolve(post);
+//             });
+//         });
+//       });
+//     });
+//
+//   Promise.all(postPromises).then(function(posts) {
+//     res.json({
+//       posts: posts
+//     });
+//   });
+//   }
+// }
+// schipholdata();
+
+
+
+
+
+
+
+// var req = http.request(options, function (res) {
+//   var chunks = [];
+//   res.on("data", function (chunk) {
+//     chunks.push(chunk);
+//   });
+//
+//   res.on("end", function (error, response) {
+//     // var body = Buffer.concat(chunks);
+//
+//       var schipbody = JSON.parse(chunks);
+//       console.log(schipbody);
+//
+//       // schipbody.data.forEach(function(schipdata) {
+//       //   console.log(schipdata.flightName);
+//       // });
+//   });
+// });
+// req.end();
+
+
+//================= original =============
+
+// var req = http.request(options, function (res) {
+//   var chunks = [];
+//   res.on("data", function (chunk) {
+//     chunks.push(chunk);
+//   });
+//   res.on("end", function () {
+//     var body = Buffer.concat(chunks);
+//     console.log(body.toString());
+//   });
+// });
+// req.end();
