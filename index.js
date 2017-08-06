@@ -14,55 +14,122 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'hbs');
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
   res.render('index');
 });
 
 
-// api.openweathermap.org/data/2.5/forecast?id=524901&APPID=a335b031bda5798564c74aca0b4a81aa
-var APPID = 'a335b031bda5798564c74aca0b4a81aa',
-    cityName = 'HongKong',
-    // url = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName +  '&APPID=' + APPID;
-    // url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + cityName +  '&APPID=' + APPID;
+app.get('/flight', function (req, res) {
+// ======= SCHIPHOL Search Flightname details ========
+
+var app_id = "152ae116",
+    app_key = "16c9819f9d3ab5e97d46e66d404402ac",
+
+    flightName = req.query.flightNumber,
+    // flightName = "CX270",
+    url = '/public-flights/flights?app_id=' + app_id + '&app_key=' + app_key + '&flightname=' + flightName;
+
+var options = {
+  "method": "GET",
+  "hostname": "api.schiphol.nl",
+  "port": null,
+  "path": url,
+  "headers": {
+    "resourceversion": "v3"
+  }
+};
+
+function flightDetails() {
+  http.get(options, function (res) {
+    var chunks = [];
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    }).on("end", function () {
+        var body = Buffer.concat(chunks);
+        var parsedData = JSON.parse(body);
+
+        var flightData = [];
+
+        flightData.destinations = parsedData.flights[0].route.destinations[0];
+        flightData.flightName = parsedData.flights[0].flightName;
+        flightData.scheduleDate = parsedData.flights[0].scheduleDate;
+        flightData.scheduleTime = parsedData.flights[0].scheduleTime;
+        flightData.gate = parsedData.flights[0].gate;
+        flightData.terminal = parsedData.flights[0].terminal;
+
+        flightData.push(flightData);
+
+        matchCity(flightData);
+    });
+  });
+}
+  // flightDetails();
+
+// ====== flightName match the city name =======
 
 
-    //  //number of dates
-    numberDate = 5;
-    url = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityName + '&cnt=' + numberDate + '&units=metric' + '&APPID=' + APPID;
-
-// http://api.openweathermap.org/data/2.5/forecast/daily?q=HOngKong&cnt=5&APPID=a335b031bda5798564c74aca0b4a81aa
 
 
-app.get("/weather", function (req, res) {
+function matchCity (flightData) {
 
-  // function myCity(city) {
-  //   var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName +  '&APPID=' + APPID;
-  //   sendrequest(url);
-  // }
+  var city_des = flightData.destinations;
+  var cityUrl = '/public-flights/destinations/' + city_des + '?app_id=' + app_id + '&app_key=' + app_key;
+
+  var options2 = {
+    "method": "GET",
+    "hostname": "api.schiphol.nl",
+    "port": null,
+    "path": cityUrl,
+    "headers": {
+      "resourceversion": "v1"
+    }
+  };
+
+
+  http.get(options2, function (res) {
+    var chunks = [];
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    }).on("end", function () {
+        var body = Buffer.concat(chunks);
+        var parsedData = JSON.parse(body);
+
+        var cityData = [];
+        cityData.city = parsedData.city;
+        cityData.country = parsedData.country;
+
+        cityData.push(cityData);
+
+        cityWeather(flightData, cityData);
+    });
+  });
+}
+// matchCity();
+
+
+// //========== WEATHER API ===========
+
+
+function cityWeather (flightData, cityData) {
+
+  var APPID = 'a335b031bda5798564c74aca0b4a81aa',
+      cityName = cityData.city;
+      numberDate = 5;
+      url = 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' + cityName + '&cnt=' + numberDate + '&units=metric' + '&APPID=' + APPID;
 
   request({url: url}, function(error, response, body) {
   if(!error && response.statusCode === 200) {
     var parsedData = JSON.parse(body);
 
-    // console.log(parsedData);
-    // console.log("========");
-
-
     //  // for 5 days
-    var weather =[];
+    var weather = [];
 
     for(var i = 0; i < 5; i++) {
       var weatherData = {};
 
-      // console.log("========");
-      // console.log(parsedData.list[i].weather[0].main);
-
       weatherData.main = parsedData.list[i].weather[0].main;
       weatherData.description = parsedData.list[i].weather[0].description;
       weatherData.icon = parsedData.list[i].weather[0].icon;
-
-      // console.log(weather.description);
-      // console.log(weather.icon);
 
       // main temp
       weatherData.temp = parsedData.list[i].temp.day;
@@ -78,64 +145,8 @@ app.get("/weather", function (req, res) {
       weatherData.countryName = parsedData.city.country;
 
       weather.push(weatherData);
-
-
-
-      // break;
-    //
-    //   //weather
-    //   main = parsedData.weather[0].main;
-    //   description = parsedData.weather[0].description;
-    //   icon = parsedData.weather[0].icon;
-    //   //main temp
-    //   temp = parsedData.main.temp;
-    //   temp_min= parsedData.main.temp_min;
-    //   temp_max= parsedData.main.temp_max;
-    //
-    //   //wind
-    //   windSpeed = parsedData.wind.speed;
-    //   windDeg = parsedData.wind.deg;
-    //
-    //   //city country
-    //   cityName = parsedData.name;
-    //   countryName = parsedData.sys.country;
-
-
-//====================== works for day 1
-    // var weather = {};
-    //
-    // weather.main = parsedData.weather[0].main;
-    // weather.description = parsedData.weather[0].description;
-    // weather.icon = parsedData.weather[0].icon;
-    // //main temp
-    // weather.temp = parsedData.main.temp;
-    // weather.temp_min= parsedData.main.temp_min;
-    // weather.temp_max= parsedData.main.temp_max;
-    //
-    // //wind
-    // weather.windSpeed = parsedData.wind.speed;
-    // weather.windDeg = parsedData.wind.deg;
-    //
-    // //city country
-    // weather.cityName = parsedData.name;
-    // weather.countryName = parsedData.sys.country;
-    // console.log(weather);
-
-
     }
 
-      // console.log(weather);
-      // console.log("STATUS===========");
-      // console.log(weather[1].main);
-      // console.log("1=============");
-      // console.log(weather[2].main);
-      // // console.log(weather[0].main);
-      //   console.log("2=============");
-      //   console.log(weather.length);
-      //   console.log("4============");
-      //   console.log(weather[0].cityName);
-
-        // weather.icon = weather[0].icon;
       for(var j = 0; j < weather.length; j++) {
 
         weather.main = weather[j].main;
@@ -143,101 +154,31 @@ app.get("/weather", function (req, res) {
         weather.temp = weather[j].temp;
         weather.temp_min = weather[j].temp_min;
         weather.temp_max = weather[j].temp_max;
-
         weather.icon = weather[j].icon;
-
-
         weather.cityName = weather[j].cityName;
         weather.countryName = weather[j].countryName;
 
      }
+       console.log("-------- laatste api --------");
+       console.log(flightData);
+       console.log(cityData);
+       console.log(weather);
+       // console.log();
+       // console.log();
+       console.log("========== einde api =========");
+       var data = {
+         flightData: flightData, cityData: cityData, weather: weather
+       };
 
-      res.render("weather", {weather: weather});
+       res.render('flight', data);
     }
   });
+}
+// cityWeather();
+
+  flightDetails();
+
 });
-
-
-
-
-
-
-// var urlweather = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName +  '&APPID=' + APPID;
-
-// request(sendrequest, function(error, response, body) {
-// if(!error && response.statusCode === 200) {
-//   var parsedData = JSON.parse(body);
-//   console.log(parsedData);
-//   }
-// });
-
-
-
-
-// }"urlweather", function(error, response, body) {
-// if(!error && response.statusCode === 200) {
-//   var parsedData = JSON.parse(body);
-//   console.log(parsedData);
-//   }
-// });
-
-// $.ajax({
-//   url: 'https://api.instagram.com/v1/users/' + userid + '/media/recent/?access_token=' + token,
-//   dataType: 'jsonp',
-//   type: 'POST',
-//   success: function(naam) {
-
-
-
-//===========================================================================
-
-var http = require("https");
-var options = {
-  "method": "GET",
-  "hostname": "api.schiphol.nl",
-  "port": null,
-  "path": "/public-flights/flights?app_id=152ae116&app_key=16c9819f9d3ab5e97d46e66d404402ac&flightname=CX270",
-  "headers": {
-    "resourceversion": "v3"
-  }
-};
-var req = http.get(options, function (res) {
-  var chunks = [];
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  }).on("end", function () {
-    var body = Buffer.concat(chunks);
-    var parsedData = JSON.parse(body);
-    console.log(parsedData);
-
-    console.log(parsedData.flights[0].route.destinations[0]);
-
-    console.log(parsedData.flights[0].flightName);
-    console.log(parsedData.flights[0].scheduleDate);
-    console.log(parsedData.flights[0].scheduleTime);
-    console.log(parsedData.flights[0].gate);
-    console.log(parsedData.flights[0].terminal);
-    // parsedData.results.forEach(function (schipdata) {
-    //
-    //   console.log(schipdata);
-    // });
-  });
-});
-req.end();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

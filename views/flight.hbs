@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/application.css">
+    <title>Flight details</title>
+  </head>
+  <body>
+
+<h1>Flight</h1>
+
+
+    <div id="display">
+
+      <h3>To: {{{cityData.city}}}, {{{cityData.country}}} ({{{flightData.destinations}}})</h3>
+
+      <h4>
+        Airline: {{{flightData.flightName}}}
+      </h4>
+      <p>
+        Date: {{{flightData.scheduleDate}}} <br>
+        Time: {{{flightData.scheduleTime}}}
+        <br>
+      </p>
+
+      <p>
+
+        Gate: {{{flightData.gate}}} <br>
+        Terminal: {{{flightData.terminal}}}
+      </p>
+    </div>
+
+
+{{#each weather as |weather|}}
+    <h4>
+      {{{weather.cityName}}}, {{{weather.countryName}}}
+    </h4>
+    <p>
+      {{{weather.main}}}
+      {{{weather.description}}}
+      <br>
+      <img src="http://openweathermap.org/img/w/{{{weather.icon}}}.png">
+    </p>
+
+    <p>
+      <!-- {{{weather.temp}}} <br> -->
+      {{{weather.temp_min}}} <br>
+      {{{weather.temp_max}}}
+    </p>
+{{/each}}
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+    <script src="js/application.js"></script>
+  </body>
+</html>

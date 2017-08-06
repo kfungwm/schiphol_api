@@ -9,15 +9,27 @@
   </head>
   <body>
 
-    Welcome World
-    {{{weather.main}}}
 
-    <div id="display">
-      {{cityName}}
-      {{parsedData.name}}
-      {{{cityName}}}
-      {{{parsedData.name}}}
+
+    <div class="container text-center">
+      <div>
+        <h1>Welcome</h1>
+      </div>
+      <p>
+        Simply enter your flight details to look up all the information you need.
+      </p>
+
+      <form action="flight" method="GET">
+        <div class="form-group">
+          <input name="flightNumber" type="text" id="flight-number" placeholder="Flight number">
+        </div>
+        <div class="form-group text-xs-right">
+          <button type="submit" class="btn">Search</button>
+        </div>
+      </form>
+
     </div>
+
 
 
 
