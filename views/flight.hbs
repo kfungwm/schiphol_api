@@ -17,7 +17,7 @@
       <h3>To: {{{cityData.city}}}, {{{cityData.country}}} ({{{flightData.destinations}}})</h3>
 
       <h4>
-        Airline: {{{flightData.flightName}}}
+        Airline: {{{airlinesData.name}}} ({{{flightData.flightName}}})
       </h4>
       <p>
         Date: {{{flightData.scheduleDate}}} <br>
@@ -46,10 +46,198 @@
 
     <p>
       <!-- {{{weather.temp}}} <br> -->
-      {{{weather.temp_min}}} <br>
-      {{{weather.temp_max}}}
+      Temp min: {{{weather.temp_min}}} <br>
+      Temp max: {{{weather.temp_max}}}
     </p>
 {{/each}}
+
+
+<!-- ================== -->
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 text-center">
+
+        <div class="load_info">
+          <a class="img-responsive" id="here" href='#here'><img src="https://ss0.4sqi.net/img/categories_v2/travel/travelagency_32.png"><br>Trending</a>
+          <a class="img-responsive" id="here" href='#here'><img src="https://ss1.4sqi.net/img/categories_v2/food/default_32.png"><br>Food</a>
+          <a class="img-responsive" id="here" href='#here'><img src="https://ss0.4sqi.net/img/categories_v2/food/coffeeshop_32.png">Coffee</a>
+          <a class="img-responsive" id="here" href='#here'><img src="https://ss1.4sqi.net/img/categories_v2/nightlife/default_32.png">Nightlife</a>
+          <a class="img-responsive" id="here" href='#here'><img src="https://ss1.4sqi.net/img/categories_v2/arts_entertainment/default_32.png"><br>Arts</a>
+          <a class="img-responsive" id="here" href='#here'><img src="https://ss0.4sqi.net/img/categories_v2/shops/default_32.png">Shopping</a>
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ================== -->
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-6 col-md-offset-3 col-xs-12">
+      <div class="main">
+
+        <div class="fours show">
+          {{#each trendingList as |trendingList|}}
+          <div class="media">
+
+            <div class="media-left">
+                <img class="media-object" src="{{{trendingList.prefix}}}88{{{trendingList.suffix}}}" alt="trendingList">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{{trendingList.name}}}</h4>
+              <p>
+                {{{trendingList.address}}} <br>
+                {{{trendingList.postalCode}}} {{{trendingList.city}}} <br>
+                {{{trendingList.phone}}} <br>
+              </p>
+            </div>
+
+            <div class="media-right">
+              <h6 id=cirkel>{{{trendingList.rating}}}</h6>
+            </div>
+            <hr class="style-two"/>
+          </div>
+          {{/each}}
+        </div>
+
+        <div class="fours">
+          {{#each foodList as |foodList|}}
+          <div class="media">
+
+            <div class="media-left">
+                <img class="media-object" src="{{{foodList.prefix}}}88{{{foodList.suffix}}}" alt="foodList">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{{foodList.name}}}</h4>
+              <p>
+                {{{foodList.address}}} <br>
+                {{{foodList.postalCode}}} {{{foodList.city}}} <br>
+                {{{foodList.phone}}} <br>
+              </p>
+            </div>
+
+            <div class="media-right">
+              <h6 id=cirkel>{{{foodList.rating}}}</h6>
+            </div>
+            <hr class="style-two"/>
+          </div>
+          {{/each}}
+        </div>
+
+        <div class="fours">
+          {{#each coffeeList as |coffeeList|}}
+              <div class="media">
+
+              <div class="media-left">
+                  <img class="media-object" src="{{{coffeeList.prefix}}}88{{{coffeeList.suffix}}}" alt="coffeeList">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">{{{coffeeList.name}}}</h4>
+                <p>
+                  {{{coffeeList.address}}} <br>
+                  {{{coffeeList.postalCode}}} {{{coffeeList.city}}} <br>
+                  {{{coffeeList.phone}}} <br>
+                </p>
+              </div>
+
+              <div class="media-right">
+                <h6 id=cirkel>{{{coffeeList.rating}}}</h6>
+              </div>
+              <hr class="style-two"/>
+            </div>
+          {{/each}}
+        </div>
+
+
+        <div class="fours">
+          {{#each nightlifeList as |nightlifeList|}}
+              <div class="media">
+
+              <div class="media-left">
+                  <img class="media-object" src="{{{nightlifeList.prefix}}}88{{{nightlifeList.suffix}}}" alt="nightlifeList">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">{{{nightlifeList.name}}}</h4>
+                <p>
+                  {{{nightlifeList.address}}} <br>
+                  {{{nightlifeList.postalCode}}} {{{nightlifeList.city}}} <br>
+                  {{{nightlifeList.phone}}} <br>
+                </p>
+              </div>
+
+              <div class="media-right">
+                <h6 id=cirkel>{{{nightlifeList.rating}}}</h6>
+              </div>
+              <hr class="style-two"/>
+            </div>
+          {{/each}}
+        </div>
+
+
+
+        <div class="fours">
+          {{#each artsList as |artsList|}}
+              <div class="media">
+
+              <div class="media-left">
+                  <img class="media-object" src="{{{artsList.prefix}}}88{{{artsList.suffix}}}" alt="artsList">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">{{{artsList.name}}}</h4>
+                <p>
+                  {{{artsList.address}}} <br>
+                  {{{artsList.postalCode}}} {{{artsList.city}}} <br>
+                  {{{artsList.phone}}} <br>
+                </p>
+              </div>
+
+              <div class="media-right">
+                <h6 id=cirkel>{{{artsList.rating}}}</h6>
+              </div>
+              <hr class="style-two"/>
+            </div>
+          {{/each}}
+        </div>
+
+
+        <div class="fours">
+          {{#each shopsList as |shopsList|}}
+              <div class="media">
+
+              <div class="media-left">
+                  <img class="media-object" src="{{{shopsList.prefix}}}88{{{shopsList.suffix}}}" alt="shopsList">
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">{{{shopsList.name}}}</h4>
+                <p>
+                  {{{shopsList.address}}} <br>
+                  {{{shopsList.postalCode}}} {{{shopsList.city}}} <br>
+                  {{{shopsList.phone}}} <br>
+                </p>
+              </div>
+
+              <div class="media-right">
+                <h6 id=cirkel>{{{shopsList.rating}}}</h6>
+              </div>
+              <hr class="style-two"/>
+            </div>
+          {{/each}}
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 
 
 

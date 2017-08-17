@@ -1,0 +1,36 @@
+.main .fours {
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.load_info a {
+  width: 70px;
+  weight: 70px;
+  margin: 10px 10px 0 0;
+  background-color: grey;
+  text-align: center;
+  color: white;
+}
+
+.img-responsive {
+  display: inline-block;
+}
+
+#cirkel {
+  width: 25px;
+  height: 25px;
+  border-radius: 20%;
+  font-size: 10px;
+  color: #fff;
+  line-height: 25px;
+  text-align: center;
+  background: green;
+  margin-top: 0;
+}
+
+hr.style-two {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
