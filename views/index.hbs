@@ -9,24 +9,31 @@
   </head>
   <body>
 
+    <div class="fullscreen-bg">
+      <video loop muted autoplay poster="img/planes.jpg" class="fullscreen-bg__video">
+          <source src="video/schiphol_clip.webm" type="video/webm">
+          <source src="video/schiphol_clip.mp4" type="video/mp4">
+      </video>
+    </div>
 
 
     <div class="container text-center">
-      <div>
-        <h1>Welcome</h1>
-      </div>
-      <p>
-        Simply enter your flight details to look up all the information you need.
-      </p>
-
-
-        <div id="contents">
+      <div class="vcenter">
+        <div class="jumbotron col-sm-8 col-sm-offset-2">
+          <div>
+            <h1>Welcome</h1>
+          </div>
+          <p>
+            Simply enter your flight details to look up all the information you need.
+          </p>
           <form action="flight" method="GET">
-            <div class="form-group">
-              <input name="flightNumber" type="text" id="flight-number" placeholder="Flight number">
+            <div class="form-group text-xs-right">
+              <div class="lefttoright">
+                <input name="flightNumber" type="text" class="form-control" id="flight-number" placeholder="Flight number">
+              </div>
             </div>
             <div class="form-group text-xs-right">
-              <button type="submit" class="btn load_button">Search</button> <br>
+              <button type="submit" class="btn btn-primary load_button">Search</button> <br>
               <div class="loading" id="gif" style="display:none;">
                 <img src="https://www.peppertravels.com/assets/images/Travel_Loader-old.gif">
               </div>
@@ -36,7 +43,7 @@
 
 
       </div>
-
+    </div>
 
 
 

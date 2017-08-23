@@ -1,3 +1,18 @@
+body {
+  background-color: #f7f7f7;
+}
+
+.navbar {
+  margin-bottom: 0px;
+  border: 0px;
+}
+
+.bs-docs-header {
+  background-color: blue;
+  position: relative;
+  padding: 30px 0;
+}
+
 .main .fours {
   width: 100%;
   height: 100%;
@@ -33,4 +48,103 @@ hr.style-two {
     border: 0;
     height: 1px;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+hr.style-six {
+    border: 0;
+    height: 0;
+    border-top: 1px solid blue;
+    border-bottom: 1px solid blue;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#abroad {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+#abroad-top {
+  padding-top: 2em;
+}
+
+.lefttoright {
+  display: inline-block;
+  margin: 10px 10px 0 0;
+}
+
+.container--content {
+  max-width: 680px;
+  /*background-color: white;*/
+}
+
+.vcenter {
+  position: fixed;
+  align-items: center;
+  top: 25%;
+  left: 0;
+  right: 0;
+  bottom: 25%;
+}
+
+.bgwhite {
+  background-color: white;
+}
+
+.customH3 {
+  font-size: 24px;
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+
+.text-white {
+  color: white;
+}
+
+
+.jumbotron {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+
+.fullscreen-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: -100;
+}
+
+.fullscreen-bg__video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .fullscreen-bg__video {
+    height: 300%;
+    top: -100%;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .fullscreen-bg__video {
+    width: 300%;
+    left: -100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .fullscreen-bg {
+    background: url(img/bluesky.jpg) center center / cover no-repeat;
+  }
+
+  .fullscreen-bg__video {
+    display: none;
+  }
 }

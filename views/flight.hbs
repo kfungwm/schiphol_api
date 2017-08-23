@@ -9,55 +9,124 @@
   </head>
   <body>
 
-<h1>Flight</h1>
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+       <span class="glyphicon glyphicon-search"></span>
+     </button>
+      <a class="navbar-brand" href="/">Home</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <form class="navbar-form navbar-right" action="flight" method="GET">
+        <div class="form-group">
+          <input name="flightNumber" type="text" class="form-control" id="flight-number" placeholder="Flight number">
+        </div>
+        <div class="form-group text-xs-right">
+          <button type="submit" class="btn btn-default load_button"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
 
 
-    <div id="display">
+<div class="bs-docs-header">
+  <div class="container container--content">
+    <div class="col-xs-12">
+      <h2 class="text-white">Departures</h2>
 
-      <h3>To: {{{cityData.city}}}, {{{cityData.country}}} ({{{flightData.destinations}}})</h3>
+    </div>
+  </div>
+</div>
 
-      <h4>
-        Airline: {{{airlinesData.name}}} ({{{flightData.flightName}}})
-      </h4>
-      <p>
-        Date: {{{flightData.scheduleDate}}} <br>
-        Time: {{{flightData.scheduleTime}}}
-        <br>
-      </p>
 
-      <p>
 
-        Gate: {{{flightData.gate}}} <br>
-        Terminal: {{{flightData.terminal}}}
-      </p>
+<div class="container container--content bgwhite">
+  <div class="col-xs-12" id="abroad-top">
+    <div>
+      <h4><img src="img/takeoff-icon.png" style="width: 32px; height: 32px" alt="take off"> Personalised travel advice</h4>
+
     </div>
 
 
-{{#each weather as |weather|}}
-    <h4>
-      {{{weather.cityName}}}, {{{weather.countryName}}}
-    </h4>
     <p>
-      {{{weather.main}}}
-      {{{weather.description}}}
-      <br>
-      <img src="http://openweathermap.org/img/w/{{{weather.icon}}}.png">
+      To
     </p>
+    <h3 class="customH3">{{{cityData.city}}} ({{{flightData.destinations}}})</h3>
+
 
     <p>
-      <!-- {{{weather.temp}}} <br> -->
-      Temp min: {{{weather.temp_min}}} <br>
-      Temp max: {{{weather.temp_max}}}
+      Airline
     </p>
-{{/each}}
 
+    <h3 class="customH3">
+      {{{airlinesData.name}}} ({{{flightData.flightName}}})
+    </h3>
+
+  </div>
+</div>
+
+
+
+<div class="container container--content bgwhite">
+  <hr class="style-six"/>
+  <div class="col-xs-12 col-sm-2 col-sm-offset-1">
+    <p>
+      Date
+    </p>
+    <h3 class="customH3">{{{flightData.scheduleDate}}}</h3>
+  </div>
+  <div class="col-xs-6 col-sm-2">
+    <p>
+      Time
+    </p>
+    <h3 class="customH3">{{{flightData.scheduleTime}}}</h3>
+  </div>
+  <div class="col-xs-6 col-sm-2">
+    <p>
+      Departure
+    </p>
+    <h3 class="customH3">{{{flightData.terminal}}}</h3>
+  </div>
+  <div class="col-xs-6 col-sm-2">
+    <p>
+      Check-in
+    </p>
+    <h3 class="customH3">{{{flightData.checkIn}}}</h3>
+  </div>
+  <div class="col-xs-6 col-sm-2">
+    <p>
+      Gate
+    </p>
+    <h3 class="customH3">{{{flightData.gate}}}</h3>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="container container--content bgwhite">
+  <div class="col-xs-12 text-center">
+    {{#each weather as |weather|}}
+      <div class="lefttoright">
+        <img src="http://openweathermap.org/img/w/{{{weather.icon}}}.png">
+        <h6>
+          {{{weather.temp_max}}}°<br>
+          {{{weather.temp_min}}}°
+        </h6>
+      </div>
+    {{/each}}
+  </div>
+</div>
 
 <!-- ================== -->
 
-
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 text-center">
+<div class="container container--content bgwhite">
+    <div class="col-xs-12 text-center" id="abroad">
 
         <div class="load_info">
           <a class="img-responsive" id="here" href='#here'><img src="https://ss0.4sqi.net/img/categories_v2/travel/travelagency_32.png"><br>Trending</a>
@@ -68,180 +137,173 @@
           <a class="img-responsive" id="here" href='#here'><img src="https://ss0.4sqi.net/img/categories_v2/shops/default_32.png">Shopping</a>
         </div>
 
-
     </div>
-  </div>
 </div>
-
-
 
 <!-- ================== -->
 
-<div class="container">
-  <div class="row">
+<div class="container container--content bgwhite">
 
-    <div class="col-md-6 col-md-offset-3 col-xs-12">
-      <div class="main">
+  <div class="col-xs-12">
+    <div class="main">
 
-        <div class="fours show">
-          {{#each trendingList as |trendingList|}}
-          <div class="media">
+      <div class="fours show">
+        {{#each trendingList as |trendingList|}}
+        <div class="media">
 
-            <div class="media-left">
-                <img class="media-object" src="{{{trendingList.prefix}}}88{{{trendingList.suffix}}}" alt="trendingList">
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">{{{trendingList.name}}}</h4>
-              <p>
-                {{{trendingList.address}}} <br>
-                {{{trendingList.postalCode}}} {{{trendingList.city}}} <br>
-                {{{trendingList.phone}}} <br>
-              </p>
-            </div>
-
-            <div class="media-right">
-              <h6 id=cirkel>{{{trendingList.rating}}}</h6>
-            </div>
-            <hr class="style-two"/>
+          <div class="media-left">
+              <img class="media-object" src="{{{trendingList.prefix}}}88{{{trendingList.suffix}}}" alt="trendingList">
           </div>
-          {{/each}}
-        </div>
-
-        <div class="fours">
-          {{#each foodList as |foodList|}}
-          <div class="media">
-
-            <div class="media-left">
-                <img class="media-object" src="{{{foodList.prefix}}}88{{{foodList.suffix}}}" alt="foodList">
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">{{{foodList.name}}}</h4>
-              <p>
-                {{{foodList.address}}} <br>
-                {{{foodList.postalCode}}} {{{foodList.city}}} <br>
-                {{{foodList.phone}}} <br>
-              </p>
-            </div>
-
-            <div class="media-right">
-              <h6 id=cirkel>{{{foodList.rating}}}</h6>
-            </div>
-            <hr class="style-two"/>
+          <div class="media-body">
+            <h4 class="media-heading">{{{trendingList.name}}}</h4>
+            <p>
+              {{{trendingList.address}}} <br>
+              {{{trendingList.postalCode}}} {{{trendingList.city}}} <br>
+              {{{trendingList.phone}}} <br>
+            </p>
           </div>
-          {{/each}}
+
+          <div class="media-right">
+            <h6 id=cirkel>{{{trendingList.rating}}}</h6>
+          </div>
+          <hr class="style-two"/>
         </div>
-
-        <div class="fours">
-          {{#each coffeeList as |coffeeList|}}
-              <div class="media">
-
-              <div class="media-left">
-                  <img class="media-object" src="{{{coffeeList.prefix}}}88{{{coffeeList.suffix}}}" alt="coffeeList">
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading">{{{coffeeList.name}}}</h4>
-                <p>
-                  {{{coffeeList.address}}} <br>
-                  {{{coffeeList.postalCode}}} {{{coffeeList.city}}} <br>
-                  {{{coffeeList.phone}}} <br>
-                </p>
-              </div>
-
-              <div class="media-right">
-                <h6 id=cirkel>{{{coffeeList.rating}}}</h6>
-              </div>
-              <hr class="style-two"/>
-            </div>
-          {{/each}}
-        </div>
-
-
-        <div class="fours">
-          {{#each nightlifeList as |nightlifeList|}}
-              <div class="media">
-
-              <div class="media-left">
-                  <img class="media-object" src="{{{nightlifeList.prefix}}}88{{{nightlifeList.suffix}}}" alt="nightlifeList">
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading">{{{nightlifeList.name}}}</h4>
-                <p>
-                  {{{nightlifeList.address}}} <br>
-                  {{{nightlifeList.postalCode}}} {{{nightlifeList.city}}} <br>
-                  {{{nightlifeList.phone}}} <br>
-                </p>
-              </div>
-
-              <div class="media-right">
-                <h6 id=cirkel>{{{nightlifeList.rating}}}</h6>
-              </div>
-              <hr class="style-two"/>
-            </div>
-          {{/each}}
-        </div>
-
-
-
-        <div class="fours">
-          {{#each artsList as |artsList|}}
-              <div class="media">
-
-              <div class="media-left">
-                  <img class="media-object" src="{{{artsList.prefix}}}88{{{artsList.suffix}}}" alt="artsList">
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading">{{{artsList.name}}}</h4>
-                <p>
-                  {{{artsList.address}}} <br>
-                  {{{artsList.postalCode}}} {{{artsList.city}}} <br>
-                  {{{artsList.phone}}} <br>
-                </p>
-              </div>
-
-              <div class="media-right">
-                <h6 id=cirkel>{{{artsList.rating}}}</h6>
-              </div>
-              <hr class="style-two"/>
-            </div>
-          {{/each}}
-        </div>
-
-
-        <div class="fours">
-          {{#each shopsList as |shopsList|}}
-              <div class="media">
-
-              <div class="media-left">
-                  <img class="media-object" src="{{{shopsList.prefix}}}88{{{shopsList.suffix}}}" alt="shopsList">
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading">{{{shopsList.name}}}</h4>
-                <p>
-                  {{{shopsList.address}}} <br>
-                  {{{shopsList.postalCode}}} {{{shopsList.city}}} <br>
-                  {{{shopsList.phone}}} <br>
-                </p>
-              </div>
-
-              <div class="media-right">
-                <h6 id=cirkel>{{{shopsList.rating}}}</h6>
-              </div>
-              <hr class="style-two"/>
-            </div>
-          {{/each}}
-        </div>
-
+        {{/each}}
       </div>
-    </div>
 
+      <div class="fours">
+        {{#each foodList as |foodList|}}
+        <div class="media">
+
+          <div class="media-left">
+              <img class="media-object" src="{{{foodList.prefix}}}88{{{foodList.suffix}}}" alt="foodList">
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">{{{foodList.name}}}</h4>
+            <p>
+              {{{foodList.address}}} <br>
+              {{{foodList.postalCode}}} {{{foodList.city}}} <br>
+              {{{foodList.phone}}} <br>
+            </p>
+          </div>
+
+          <div class="media-right">
+            <h6 id=cirkel>{{{foodList.rating}}}</h6>
+          </div>
+          <hr class="style-two"/>
+        </div>
+        {{/each}}
+      </div>
+
+      <div class="fours">
+        {{#each coffeeList as |coffeeList|}}
+            <div class="media">
+
+            <div class="media-left">
+                <img class="media-object" src="{{{coffeeList.prefix}}}88{{{coffeeList.suffix}}}" alt="coffeeList">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{{coffeeList.name}}}</h4>
+              <p>
+                {{{coffeeList.address}}} <br>
+                {{{coffeeList.postalCode}}} {{{coffeeList.city}}} <br>
+                {{{coffeeList.phone}}} <br>
+              </p>
+            </div>
+
+            <div class="media-right">
+              <h6 id=cirkel>{{{coffeeList.rating}}}</h6>
+            </div>
+            <hr class="style-two"/>
+          </div>
+        {{/each}}
+      </div>
+
+
+      <div class="fours">
+        {{#each nightlifeList as |nightlifeList|}}
+            <div class="media">
+
+            <div class="media-left">
+                <img class="media-object" src="{{{nightlifeList.prefix}}}88{{{nightlifeList.suffix}}}" alt="nightlifeList">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{{nightlifeList.name}}}</h4>
+              <p>
+                {{{nightlifeList.address}}} <br>
+                {{{nightlifeList.postalCode}}} {{{nightlifeList.city}}} <br>
+                {{{nightlifeList.phone}}} <br>
+              </p>
+            </div>
+
+            <div class="media-right">
+              <h6 id=cirkel>{{{nightlifeList.rating}}}</h6>
+            </div>
+            <hr class="style-two"/>
+          </div>
+        {{/each}}
+      </div>
+
+
+
+      <div class="fours">
+        {{#each artsList as |artsList|}}
+            <div class="media">
+
+            <div class="media-left">
+                <img class="media-object" src="{{{artsList.prefix}}}88{{{artsList.suffix}}}" alt="artsList">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{{artsList.name}}}</h4>
+              <p>
+                {{{artsList.address}}} <br>
+                {{{artsList.postalCode}}} {{{artsList.city}}} <br>
+                {{{artsList.phone}}} <br>
+              </p>
+            </div>
+
+            <div class="media-right">
+              <h6 id=cirkel>{{{artsList.rating}}}</h6>
+            </div>
+            <hr class="style-two"/>
+          </div>
+        {{/each}}
+      </div>
+
+
+      <div class="fours">
+        {{#each shopsList as |shopsList|}}
+            <div class="media">
+
+            <div class="media-left">
+                <img class="media-object" src="{{{shopsList.prefix}}}88{{{shopsList.suffix}}}" alt="shopsList">
+            </div>
+            <div class="media-body">
+              <h4 class="media-heading">{{{shopsList.name}}}</h4>
+              <p>
+                {{{shopsList.address}}} <br>
+                {{{shopsList.postalCode}}} {{{shopsList.city}}} <br>
+                {{{shopsList.phone}}} <br>
+              </p>
+            </div>
+
+            <div class="media-right">
+              <h6 id=cirkel>{{{shopsList.rating}}}</h6>
+            </div>
+            <hr class="style-two"/>
+          </div>
+        {{/each}}
+      </div>
+
+    </div>
   </div>
 </div>
 
 
 
 
-
-
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
     <script src="js/application.js"></script>
   </body>

@@ -2,6 +2,10 @@
 //     $('#gif').css('visibility', 'visible');
 // });
 
+// $.get("navigation.hbs", function(data) {
+//   $("#nav-placeholder").replaceWith(data);
+// });
+
 
 $('.load_button').click(function(){
    $('#gif').show();

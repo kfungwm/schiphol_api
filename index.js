@@ -18,14 +18,13 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/flight', function (req, res) {
+app.get('/flight', function(req, res) {
 // ======= SCHIPHOL Search Flightname details ========
 
 var app_id = "152ae116",
     app_key = "16c9819f9d3ab5e97d46e66d404402ac",
 
     flightName = req.query.flightNumber.toUpperCase().replace(/\s+/g, '');
-    // flightName = "CX270",
     url = '/public-flights/flights?app_id=' + app_id + '&app_key=' + app_key + '&flightname=' + flightName;
 
 var options = {
@@ -52,9 +51,10 @@ function flightDetails() {
         flightData.destinations = parsedData.flights[0].route.destinations[0];
         flightData.flightName = parsedData.flights[0].flightName;
         flightData.scheduleDate = parsedData.flights[0].scheduleDate;
-        flightData.scheduleTime = parsedData.flights[0].scheduleTime;
+        flightData.scheduleTime = parsedData.flights[0].scheduleTime.substring(0, parsedData.flights[0].scheduleTime.length-3);
         flightData.gate = parsedData.flights[0].gate;
         flightData.terminal = parsedData.flights[0].terminal;
+        flightData.checkIn = parsedData.flights[0].checkinAllocations.checkinAllocations[0].rows.rows[0].position;
         flightData.flightIA = parsedData.flights[0].prefixIATA;
 
         flightData.push(flightData);
@@ -66,7 +66,7 @@ function flightDetails() {
 
 // ====== IATA Match AirlinesName ======
 
-function matchAirlines (flightData) {
+function matchAirlines(flightData) {
 
   var iata = flightData.flightIA;
   var airlinesUrl = '/public-flights/airlines/' + iata + '?app_id=' + app_id + '&app_key=' + app_key;
@@ -81,11 +81,11 @@ function matchAirlines (flightData) {
     }
   };
 
-  http.get(airlines, function (res) {
+  http.get(airlines, function(res) {
     var chunks = [];
-    res.on("data", function (chunk) {
+    res.on("data", function(chunk) {
       chunks.push(chunk);
-    }).on("end", function () {
+    }).on("end", function() {
         var body = Buffer.concat(chunks);
         var parsedData = JSON.parse(body);
 
@@ -99,15 +99,11 @@ function matchAirlines (flightData) {
   });
 }
 
-
-
-
 // ====== flightName match the city name =======
 
-function matchCity (flightData, airlinesData) {
+function matchCity(flightData, airlinesData) {
 
   var city_des = flightData.destinations;
-  // var iata = s;
   var cityUrl = '/public-flights/destinations/' + city_des + '?app_id=' + app_id + '&app_key=' + app_key;
 
   var cityOptions = {
@@ -120,11 +116,11 @@ function matchCity (flightData, airlinesData) {
     }
   };
 
-  http.get(cityOptions, function (res) {
+  http.get(cityOptions, function(res) {
     var chunks = [];
-    res.on("data", function (chunk) {
+    res.on("data", function(chunk) {
       chunks.push(chunk);
-    }).on("end", function () {
+    }).on("end", function() {
         var body = Buffer.concat(chunks);
         var parsedData = JSON.parse(body);
         var cityData = [];
@@ -138,10 +134,10 @@ function matchCity (flightData, airlinesData) {
   });
 }
 
+
 // //========== WEATHER API ===========
 
-
-function cityWeather (flightData, airlinesData, cityData) {
+function cityWeather(flightData, airlinesData, cityData) {
 
   var APPID = 'a335b031bda5798564c74aca0b4a81aa',
       cityName = cityData.city;
@@ -152,7 +148,6 @@ function cityWeather (flightData, airlinesData, cityData) {
   if(!error && response.statusCode === 200) {
     var parsedData = JSON.parse(body);
 
-    //  // for 5 days
     var weather = [];
 
     for(var i = 0; i < 5; i++) {
@@ -177,7 +172,6 @@ function cityWeather (flightData, airlinesData, cityData) {
 
       weather.push(weatherData);
     }
-
       for(var j = 0; j < weather.length; j++) {
 
         weather.main = weather[j].main;
@@ -188,11 +182,8 @@ function cityWeather (flightData, airlinesData, cityData) {
         weather.icon = weather[j].icon;
         weather.cityName = weather[j].cityName;
         weather.countryName = weather[j].countryName;
-
-
      }
      foursquareFood(flightData, airlinesData, cityData, weather);
-
     }
   });
 }
@@ -231,7 +222,7 @@ function foursquareFood(flightData, airlinesData, cityData, weather) {
         foodData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
         foodData.url = parsedData.response.groups[0].items[i].venue.url;
         foodData.rating = parsedData.response.groups[0].items[i].venue.rating;
-        // console.log(foodData.response.groups[0].items[i].venue.menu.url);
+        // footData.menu = foodData.response.groups[0].items[i].venue.menu.url;
         // foodData.status = parsedData.response.groups[0].items[i].venue.hours.status;
 
 
@@ -272,9 +263,7 @@ function foursquareCoffee(flightData, airlinesData, cityData, weather, foodList)
         coffeeData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
         coffeeData.url = parsedData.response.groups[0].items[i].venue.url;
         coffeeData.rating = parsedData.response.groups[0].items[i].venue.rating;
-        // console.log(foodData.response.groups[0].items[i].venue.menu.url);
         // coffeeData.status = parsedData.response.groups[0].items[i].venue.hours.status;
-
 
         coffeeList.push(coffeeData);
       }
@@ -314,9 +303,7 @@ function foursquareNightlife(flightData, airlinesData, cityData, weather, foodLi
         nightlifeData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
         nightlifeData.url = parsedData.response.groups[0].items[i].venue.url;
         nightlifeData.rating = parsedData.response.groups[0].items[i].venue.rating;
-        // console.log(foodData.response.groups[0].items[i].venue.menu.url);
         // nightlifeData.status = parsedData.response.groups[0].items[i].venue.hours.status;
-
 
         nightlifeList.push(nightlifeData);
       }
@@ -355,9 +342,7 @@ function foursquareShops(flightData, airlinesData, cityData, weather, foodList, 
         shopsData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
         shopsData.url = parsedData.response.groups[0].items[i].venue.url;
         shopsData.rating = parsedData.response.groups[0].items[i].venue.rating;
-        // console.log(foodData.response.groups[0].items[i].venue.menu.url);
         // shopsData.status = parsedData.response.groups[0].items[i].venue.hours.status;
-
 
         shopsList.push(shopsData);
       }
@@ -396,9 +381,7 @@ function foursquareTrending(flightData, airlinesData, cityData, weather, foodLis
         trendingData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
         trendingData.url = parsedData.response.groups[0].items[i].venue.url;
         trendingData.rating = parsedData.response.groups[0].items[i].venue.rating;
-        // console.log(foodData.response.groups[0].items[i].venue.menu.url);
         // trendingData.status = parsedData.response.groups[0].items[i].venue.hours.status;
-
 
         trendingList.push(trendingData);
       }
@@ -438,16 +421,20 @@ function foursquareArts(flightData, airlinesData, cityData, weather, foodList, c
 
         artsData.prefix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].prefix;
         artsData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
-        artsData.url = parsedData.response.groups[0].items[i].venue.url;
+        // artsData.url = parsedData.response.groups[0].items[i].venue.url;
         artsData.rating = parsedData.response.groups[0].items[i].venue.rating;
 
         artsList.push(artsData);
       }
       console.log("-------- All Api Details --------");
-      // console.log(flightData);
-      // console.log(airlinesData);
-      // console.log(cityData);
-      // console.log(weather);
+      console.log(flightData);
+      console.log("===============");
+      console.log(airlinesData);
+      console.log("===============");
+      console.log(cityData);
+      console.log("===============");
+      console.log(weather);
+      console.log("===============");
       console.log(trendingList);
       console.log("===============");
       console.log(nightlifeList);
@@ -468,14 +455,14 @@ function foursquareArts(flightData, airlinesData, cityData, weather, foodList, c
   });
 }
 
-
-
-
-
-
-
   flightDetails();
 
+});
+
+
+
+app.get('/nav', (req, res) => {
+  res.render('navigation');
 });
 
 
