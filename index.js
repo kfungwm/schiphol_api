@@ -5,8 +5,10 @@ var express = require('express'),
     hbs = require ('hbs');
     http = require("https");
 
-
 var app = express();
+
+var port = process.env.PORT || 3000;
+
 
 app.use(express.static('public'));
 app.use(morgan('dev'));
@@ -466,6 +468,6 @@ app.get('/nav', (req, res) => {
 });
 
 
-app.listen(3000, () => {
-  console.log('Web server started on port 3000');
+app.listen(port, () => {
+  console.log('Web server started on port ' + port);
 });
