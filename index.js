@@ -7,8 +7,8 @@ var express = require('express'),
 
 var app = express();
 
-// var port = process.env.PORT || 3000;
-app.set('port', (process.env.PORT || 3000));
+var port = process.env.PORT || 3000;
+
 
 app.use(express.static('public'));
 app.use(morgan('dev'));
@@ -463,11 +463,6 @@ function foursquareArts(flightData, airlinesData, cityData, weather, foodList, c
 
 
 
-app.get('/nav', (req, res) => {
-  res.render('navigation');
-});
-
-
-app.listen(app.get('port'), () => {
+app.listen(port, () => {
   console.log('Web server started on port', app.get('port'));
 });

@@ -15,5 +15,8 @@
     "https": "^1.0.0",
     "morgan": "^1.8.2",
     "request": "^2.81.0"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
