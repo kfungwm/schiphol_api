@@ -7,8 +7,8 @@ var express = require('express'),
 
 var app = express();
 
-var port = process.env.PORT || 3000;
-
+// var port = process.env.PORT || 3000;
+app.set('port', (process.env.PORT || 3000));
 
 app.use(express.static('public'));
 app.use(morgan('dev'));
@@ -468,6 +468,6 @@ app.get('/nav', (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log('Web server started on port ' + port);
+app.listen(app.get('port'), () => {
+  console.log('Web server started on port', app.get('port'));
 });
