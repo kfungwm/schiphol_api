@@ -46,7 +46,7 @@ function flightDetails() {
   http.get(options, function (res) {
     if(res.statusMessage == "No Content") {
       console.log("Data cannot found");
-
+    
       return;
     }
     console.log(res.statusMessage);
@@ -447,12 +447,12 @@ function foursquareArts(flightData, airlinesData, cityData, weather, foodList, c
         artsList.push(artsData);
       }
       console.log("-------- All Api Details --------");
-      // console.log(flightData);
-      // console.log("===============");
-      // console.log(airlinesData);
-      // console.log("===============");
-      // console.log(cityData);
-      // console.log("===============");
+      console.log(flightData);
+      console.log("===============");
+      console.log(airlinesData);
+      console.log("===============");
+      console.log(cityData);
+      console.log("===============");
       // console.log(weather);
       // console.log("===============");
       // console.log(trendingList);
