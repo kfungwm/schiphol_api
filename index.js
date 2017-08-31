@@ -2,8 +2,8 @@ var express = require('express'),
     morgan = require ('morgan'),
     request = require('request'),
     bodyParser = require('body-parser'),
-    hbs = require ('hbs');
-    http = require("https");
+    hbs = require ('hbs'),
+    http = require('https');
 
 var app = express();
 
@@ -16,9 +16,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'hbs');
 
+
 app.get('/', (req, res) => {
   res.render('index');
 });
+
+
 
 app.get('/flight', function(req, res) {
 // ======= SCHIPHOL Search Flightname details ========
@@ -41,27 +44,41 @@ var options = {
 
 function flightDetails() {
   http.get(options, function (res) {
+    if(res.statusMessage == "No Content") {
+      console.log("Data cannot found");
+
+      return;
+    }
+    console.log(res.statusMessage);
+
+
     var chunks = [];
+
     res.on("data", function (chunk) {
       chunks.push(chunk);
+
     }).on("end", function () {
-        var body = Buffer.concat(chunks);
-        var parsedData = JSON.parse(body);
+      var body = Buffer.concat(chunks);
+      var parsedData = JSON.parse(body);
 
-        var flightData = [];
+      var flightData = [];
 
-        flightData.destinations = parsedData.flights[0].route.destinations[0];
-        flightData.flightName = parsedData.flights[0].flightName;
-        flightData.scheduleDate = parsedData.flights[0].scheduleDate;
-        flightData.scheduleTime = parsedData.flights[0].scheduleTime.substring(0, parsedData.flights[0].scheduleTime.length-3);
-        flightData.gate = parsedData.flights[0].gate;
-        flightData.terminal = parsedData.flights[0].terminal;
-        flightData.checkIn = parsedData.flights[0].checkinAllocations.checkinAllocations[0].rows.rows[0].position;
-        flightData.flightIA = parsedData.flights[0].prefixIATA;
+      flightData.destinations = parsedData.flights[0].route.destinations[0];
+      flightData.flightName = parsedData.flights[0].flightName;
+      flightData.scheduleDate = parsedData.flights[0].scheduleDate;
+      flightData.scheduleTime = parsedData.flights[0].scheduleTime.substring(0, parsedData.flights[0].scheduleTime.length-3);
+      flightData.gate = parsedData.flights[0].gate;
+      flightData.terminal = parsedData.flights[0].terminal;
+      flightData.checkIn = parsedData.flights[0].checkinAllocations.checkinAllocations[0].rows.rows[0].position;
+      flightData.flightIA = parsedData.flights[0].prefixIATA;
 
-        flightData.push(flightData);
+      flightData.scheduleDag = parsedData.flights[0].scheduleDate.substring(8);
+      flightData.scheduleMaand = parsedData.flights[0].scheduleDate.substring(5, parsedData.flights[0].scheduleDate.length-3);
 
-        matchAirlines(flightData);
+      flightData.push(flightData);
+
+      matchAirlines(flightData);
+
     });
   });
 }
@@ -88,15 +105,15 @@ function matchAirlines(flightData) {
     res.on("data", function(chunk) {
       chunks.push(chunk);
     }).on("end", function() {
-        var body = Buffer.concat(chunks);
-        var parsedData = JSON.parse(body);
+      var body = Buffer.concat(chunks);
+      var parsedData = JSON.parse(body);
 
-        var airlinesData = [];
-        airlinesData.name = parsedData.publicName;
+      var airlinesData = [];
+      airlinesData.name = parsedData.publicName;
 
-        airlinesData.push(airlinesData);
+      airlinesData.push(airlinesData);
 
-        matchCity(flightData, airlinesData);
+      matchCity(flightData, airlinesData);
     });
   });
 }
@@ -123,15 +140,15 @@ function matchCity(flightData, airlinesData) {
     res.on("data", function(chunk) {
       chunks.push(chunk);
     }).on("end", function() {
-        var body = Buffer.concat(chunks);
-        var parsedData = JSON.parse(body);
-        var cityData = [];
-        cityData.city = parsedData.city;
-        cityData.country = parsedData.country;
+      var body = Buffer.concat(chunks);
+      var parsedData = JSON.parse(body);
+      var cityData = [];
+      cityData.city = parsedData.city;
+      cityData.country = parsedData.country;
 
-        cityData.push(cityData);
+      cityData.push(cityData);
 
-        cityWeather(flightData, airlinesData, cityData);
+      cityWeather(flightData, airlinesData, cityData);
     });
   });
 }
@@ -222,8 +239,8 @@ function foursquareFood(flightData, airlinesData, cityData, weather) {
 
         foodData.prefix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].prefix;
         foodData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
-        foodData.url = parsedData.response.groups[0].items[i].venue.url;
         foodData.rating = parsedData.response.groups[0].items[i].venue.rating;
+        // foodData.url = parsedData.response.groups[0].items[i].venue.url;
         // footData.menu = foodData.response.groups[0].items[i].venue.menu.url;
         // foodData.status = parsedData.response.groups[0].items[i].venue.hours.status;
 
@@ -263,9 +280,9 @@ function foursquareCoffee(flightData, airlinesData, cityData, weather, foodList)
 
         coffeeData.prefix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].prefix;
         coffeeData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
-        coffeeData.url = parsedData.response.groups[0].items[i].venue.url;
         coffeeData.rating = parsedData.response.groups[0].items[i].venue.rating;
         // coffeeData.status = parsedData.response.groups[0].items[i].venue.hours.status;
+        // coffeeData.url = parsedData.response.groups[0].items[i].venue.url;
 
         coffeeList.push(coffeeData);
       }
@@ -303,9 +320,9 @@ function foursquareNightlife(flightData, airlinesData, cityData, weather, foodLi
 
         nightlifeData.prefix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].prefix;
         nightlifeData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
-        nightlifeData.url = parsedData.response.groups[0].items[i].venue.url;
         nightlifeData.rating = parsedData.response.groups[0].items[i].venue.rating;
         // nightlifeData.status = parsedData.response.groups[0].items[i].venue.hours.status;
+        // nightlifeData.url = parsedData.response.groups[0].items[i].venue.url;
 
         nightlifeList.push(nightlifeData);
       }
@@ -342,9 +359,9 @@ function foursquareShops(flightData, airlinesData, cityData, weather, foodList, 
 
         shopsData.prefix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].prefix;
         shopsData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
-        shopsData.url = parsedData.response.groups[0].items[i].venue.url;
         shopsData.rating = parsedData.response.groups[0].items[i].venue.rating;
         // shopsData.status = parsedData.response.groups[0].items[i].venue.hours.status;
+        // shopsData.url = parsedData.response.groups[0].items[i].venue.url;
 
         shopsList.push(shopsData);
       }
@@ -381,9 +398,9 @@ function foursquareTrending(flightData, airlinesData, cityData, weather, foodLis
 
         trendingData.prefix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].prefix;
         trendingData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
-        trendingData.url = parsedData.response.groups[0].items[i].venue.url;
         trendingData.rating = parsedData.response.groups[0].items[i].venue.rating;
         // trendingData.status = parsedData.response.groups[0].items[i].venue.hours.status;
+        // trendingData.url = parsedData.response.groups[0].items[i].venue.url;
 
         trendingList.push(trendingData);
       }
@@ -423,29 +440,30 @@ function foursquareArts(flightData, airlinesData, cityData, weather, foodList, c
 
         artsData.prefix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].prefix;
         artsData.suffix = parsedData.response.groups[0].items[i].venue.featuredPhotos.items[0].suffix;
-        // artsData.url = parsedData.response.groups[0].items[i].venue.url;
         artsData.rating = parsedData.response.groups[0].items[i].venue.rating;
+        // artsData.url = parsedData.response.groups[0].items[i].venue.url;
+
 
         artsList.push(artsData);
       }
       console.log("-------- All Api Details --------");
-      console.log(flightData);
-      console.log("===============");
-      console.log(airlinesData);
-      console.log("===============");
-      console.log(cityData);
-      console.log("===============");
-      console.log(weather);
-      console.log("===============");
-      console.log(trendingList);
-      console.log("===============");
-      console.log(nightlifeList);
-      console.log("===============");
-      console.log(coffeeList);
-      console.log("===============");
-      console.log(artsList);
-      console.log("===============");
-      console.log(shopsList);
+      // console.log(flightData);
+      // console.log("===============");
+      // console.log(airlinesData);
+      // console.log("===============");
+      // console.log(cityData);
+      // console.log("===============");
+      // console.log(weather);
+      // console.log("===============");
+      // console.log(trendingList);
+      // console.log("===============");
+      // console.log(nightlifeList);
+      // console.log("===============");
+      // console.log(coffeeList);
+      // console.log("===============");
+      // console.log(artsList);
+      // console.log("===============");
+      // console.log(shopsList);
       console.log("========== End =========");
 
       var data = {

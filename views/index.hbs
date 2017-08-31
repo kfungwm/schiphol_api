@@ -29,7 +29,8 @@
           <form action="flight" method="GET">
             <div class="form-group text-xs-right">
               <div class="lefttoright">
-                <input name="flightNumber" type="text" class="form-control" id="flight-number" placeholder="Flight number">
+
+                <input name="flightNumber" type="text" class="form-control" id="flight-number" placeholder="Flight number" pattern=".{5,}" required title="Minimum characters of flightname is 5">
               </div>
             </div>
             <div class="form-group text-xs-right">
@@ -41,15 +42,8 @@
           </form>
         </div>
 
-
       </div>
     </div>
-
-
-
-
-
-
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
