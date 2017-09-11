@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 
 
 
-app.get('/flight', function(req, res) {
+app.get('/search', function(req, res) {
 // ======= SCHIPHOL Search Flightname details ========
 
 var app_id = "152ae116",
@@ -43,18 +43,22 @@ var options = {
 };
 
 function flightDetails() {
-  http.get(options, function (res) {
-    if(res.statusMessage == "No Content") {
+  http.get(options, function (response) {
+    if(response.statusMessage == "No Content") {
       console.log("Data cannot found");
-    
-      return;
-    }
-    console.log(res.statusMessage);
+
+      res.render('index');
+
+
+    } else {
+
+
+    console.log(response.statusMessage);
 
 
     var chunks = [];
 
-    res.on("data", function (chunk) {
+    response.on("data", function (chunk) {
       chunks.push(chunk);
 
     }).on("end", function () {
@@ -80,6 +84,7 @@ function flightDetails() {
       matchAirlines(flightData);
 
     });
+  }
   });
 }
 
@@ -471,8 +476,11 @@ function foursquareArts(flightData, airlinesData, cityData, weather, foodList, c
       };
 
       res.render('flight', data);
+
+
     }
   });
+
 }
 
   flightDetails();

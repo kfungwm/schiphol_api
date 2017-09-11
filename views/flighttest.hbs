@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/application.css">
+    <title>Flight details</title>
+  </head>
+  <body>
+
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+       <span class="glyphicon glyphicon-search"></span>
+     </button>
+      <a class="navbar-brand" href="/">Home</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <form class="navbar-form navbar-right" action="flight" method="GET">
+        <div class="form-group">
+          <input name="flightNumber" type="text" class="form-control" id="flight-number" placeholder="Flight number" placeholder="Flight number" pattern=".{5,}" required title="Minimum characters of flightname is 5">
+        </div>
+        <div class="form-group text-xs-right">
+          <button type="submit" class="btn btn-default load_button"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+<div class="bs-docs-header">
+  <div class="container container--content">
+    <div class="col-xs-12">
+      <h2 class="text-white">Departures</h2>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container container--content bgwhite">
+  <div class="col-xs-12" id="abroad-top">
+    <div>
+      <h4><img src="img/takeoff-icon.png" style="width: 32px; height: 32px" alt="take off"> Personalised travel advice</h4>
+
+    </div>
+
+
+    <p>
+      To
+    </p>
+    <h3 class="customH3">({{{flightData.destinations}}})</h3>
+
+
+    <p>
+      Airline
+    </p>
+
+    <h3 class="customH3">
+      ({{{flightData.flightName}}})
+    </h3>
+
+  </div>
+</div>
+
+
+
+<div class="container container--content bgwhite">
+  <hr class="style-six"/>
+  <div class="col-xs-12 col-sm-2 col-sm-offset-1">
+    <p>
+      Date
+    </p>
+    <h3 class="customH3">{{{flightData.scheduleDag}}}-{{{flightData.scheduleMaand}}}</h3>
+  </div>
+  <div class="col-xs-6 col-sm-2">
+    <p>
+      Time
+    </p>
+    <h3 class="customH3">{{{flightData.scheduleTime}}}</h3>
+  </div>
+  <div class="col-xs-6 col-sm-2">
+    <p>
+      Departure
+    </p>
+    <h3 class="customH3">{{{flightData.terminal}}}</h3>
+  </div>
+  <div class="col-xs-6 col-sm-2">
+    <p>
+      Check-in
+    </p>
+    <h3 class="customH3">{{{flightData.checkIn}}}</h3>
+  </div>
+  <div class="col-xs-6 col-sm-2">
+    <p>
+      Gate
+    </p>
+    <h3 class="customH3">{{{flightData.gate}}}</h3>
+  </div>
+</div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+    <script src="js/application.js"></script>
+  </body>
+</html>
