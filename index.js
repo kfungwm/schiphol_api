@@ -44,7 +44,7 @@ var options = {
 
 function flightDetails() {
   http.get(options, function (response) {
-    if(response.statusMessage == "No Content") {
+    if(response.statusMessage == "No Content" || response.statusMessage == "Bad Request") {
       console.log("Data cannot found");
 
       res.render('index');
